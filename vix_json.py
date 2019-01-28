@@ -37,24 +37,26 @@ Here we'll read in the JSON file and establish what data to extract from it.
 """
 #%%
 with open('/Users/Thomas/Desktop/Finance_Python/vix-daily_json.json', 'r') as vix:
-    data=vix.read()
+    #read function has to be used w/ json.loads 
+    df = json.loads(vix.read())
 
 
-df = json.load(data)
+df = df.index(df).split()
+df["H/O"] = df["VIX High"]/df["VIX Open"]
+df["L/O"] = df["VIX Low"]/df["VIX Open"]
+df["C/O"] = df["VIX Close"]/df["VIX Open"]
 
+print(df["H/L"])
 
-df["H/O"] = df["High"]/df["Open"]
-df["L/O"] = df["Low"]/df["Open"]
-df["C/O"] = df["Close"]/df["Open"]
-df.drop(
+#%%
+#df.remove(
         [
-            "Open", "High", "Low",
-            "Close", "Volume", "Adj Close"
+            "VIX Open", "VIX High", "VIX Low",
+            "VIX Close","
         ],
-        axis=1, inplace=True
+        #axis=1, inplace=True
     )
-
-print(df)
+#print(df)
 
 
 
